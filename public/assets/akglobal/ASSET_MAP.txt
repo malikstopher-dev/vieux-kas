@@ -1,0 +1,60 @@
+AKGLOBAL TRADING PTY — WEBSITE ASSET MAP
+
+Use these assets as the project's visual source of truth.
+
+BRAND
+/public/assets/akglobal/brand/akglobal-logo-transparent.png
+- Primary full logo on light/transparent backgrounds.
+- Use in desktop header, footer where appropriate, contact page and metadata.
+
+ /public/assets/akglobal/brand/akglobal-logo-master.png
+- Original cleaned raster master. Keep as fallback.
+
+ /public/assets/akglobal/brand/akglobal-symbol-transparent.png
+- AK symbol only.
+- Use for favicon/app icon, subtle watermark, mobile nav mark, loading mark.
+
+HERO
+/public/assets/akglobal/hero/hero-lifting-hook.jpg
+- Primary homepage hero visual.
+- Intended for a split/editorial hero: HTML copy on the left, image on the right.
+- Do not put baked text over the image itself.
+
+ /public/assets/akglobal/hero/hero-industrial-warehouse.jpg
+- Alternate / secondary hero and full-width CTA visual.
+
+CATEGORY IMAGES
+/public/assets/akglobal/categories/lifting-equipment.jpg
+/public/assets/akglobal/categories/fasteners-bolting.jpg
+/public/assets/akglobal/categories/industrial-hardware.jpg
+/public/assets/akglobal/categories/procurement-sourcing.jpg
+
+TEXTURE
+/public/assets/akglobal/textures/ak-industrial-dark-texture.jpg
+- Use sparingly for a premium dark CTA/footer/statement section.
+- Never tile aggressively.
+
+REFERENCE BOARDS
+/public/assets/akglobal/reference/brand-board-01.png
+/public/assets/akglobal/reference/brand-board-02.png
+/public/assets/akglobal/reference/brand-board-final.png
+- These are VISUAL REFERENCES, not page screenshots to copy pixel-for-pixel.
+- Use them to understand composition, typography, proportion, accent restraint, industrial photography and premium tone.
+
+BRAND PALETTE
+#111318  Primary near-black
+#25282E  Graphite
+#A21A8D  AK magenta/plum accent
+#FFFFFF  White
+#F7F7F5  Off-white
+#D9DBDE  Silver grey
+#666B73  Muted text grey
+
+TYPOGRAPHY DIRECTION
+Display/headlines: Playfair Display or an equally refined serif if already available.
+Body/UI: Inter or an equally clean modern sans serif.
+
+IMPORTANT
+- Keep the public website restrained and corporate.
+- Never expose supplier prices, AKGLOBAL banking details, procurement margins or supplier quotations.
+- Do not invent partnerships, certifications, customers, years of experience, ratings or statistics.

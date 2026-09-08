@@ -1,0 +1,22 @@
+OPENCode ASSET ADDENDUM
+
+Before designing, copy the entire 'akglobal' folder into:
+public/assets/akglobal/
+
+Then inspect ASSET_MAP.txt.
+
+Use the supplied logo and hero/category photography instead of searching for random generic visuals during the initial build.
+
+Homepage visual hierarchy:
+1. Primary logo: brand/akglobal-logo-transparent.png
+2. Hero focal: hero/hero-lifting-hook.jpg
+3. Lifting: categories/lifting-equipment.jpg
+4. Fasteners: categories/fasteners-bolting.jpg
+5. Industrial Hardware: categories/industrial-hardware.jpg
+6. Procurement: categories/procurement-sourcing.jpg
+7. Dark statement texture: textures/ak-industrial-dark-texture.jpg
+
+The reference boards define the target design language:
+premium industrial, white/off-white space, charcoal, editorial serif headlines, clean sans body typography, restrained magenta accents, fine rules, cinematic metal photography, no template feel.
+
+Do not replace these assets with random stock images unless there is a concrete design reason and the replacement is demonstrably better.
