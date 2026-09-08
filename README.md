@@ -34,6 +34,8 @@ Without the email variables, the RFQ form does not claim success or create a ref
 
 Live Worker: <https://akglobal-trading.malikstopher.workers.dev>
 
+Source repository: <https://github.com/malikstopher-dev/vieux-kas>
+
 This Next.js 16 application uses Cloudflare's vinext adapter. The current `workers.dev` address is configured as `NEXT_PUBLIC_SITE_URL` in `wrangler.jsonc`. Replace that value with the custom domain when it becomes canonical, then rebuild and deploy.
 
 To connect automatic GitHub deployments in Cloudflare:
