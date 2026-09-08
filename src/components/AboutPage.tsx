@@ -14,7 +14,7 @@ export function AboutPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
     <section className="company-details section-pad dark-section"><div className="shell">
       <p className="kicker">{copy.about.detailsTitle}</p>
       <div className="details-grid">
-        <div><span>Legal name</span><strong>{company.name}</strong></div>
+        <div><span>{locale === "en" ? "Legal name" : "Dénomination légale"}</span><strong>{company.name}</strong></div>
         <div><span>{copy.contact.registration}</span><strong>{company.registration}</strong></div>
         <div><span>{copy.contact.office}</span><strong>{company.address.join(", ")}</strong></div>
         <div><span>{copy.contact.owner}</span><strong>{company.owner}</strong></div>

@@ -7,5 +7,10 @@
 /test-results
 /playwright-report
 /public/verification
+/verification
+/verification
 /prompt.txt
 *.tsbuildinfo
+/dist/
+.vinext/
+.wrangler/

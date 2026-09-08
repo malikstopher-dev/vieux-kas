@@ -69,6 +69,33 @@ test("mobile layouts are overflow-free at every required width", async ({page}) 
       const heroBox = await page.locator(".hero-copy h1").boundingBox();
       expect(heroBox?.x ?? -1).toBeGreaterThanOrEqual(0);
       expect((heroBox?.x ?? 0) + (heroBox?.width ?? width)).toBeLessThanOrEqual(width);
+      const procurementTitle = page.locator(".category-procurement h3");
+      const titleFits = await procurementTitle.evaluate((element) => element.scrollWidth <= element.clientWidth + 1);
+      expect(titleFits, `${locale} procurement title at ${width}px`).toBe(true);
+    }
+  }
+});
+
+test("desktop polish fits and sticky header clears every homepage section", async ({page}) => {
+  for (const width of [1280, 1366, 1440, 1920]) {
+    await page.setViewportSize({width, height: 900});
+    for (const locale of ["en", "fr"]) {
+      await gotoStable(page, `/${locale}`);
+      await assertNoHorizontalScroll(page, `${locale} desktop ${width}px`);
+      await expect(page.locator(".hero-actions .action-primary")).toBeInViewport();
+      const titleFits = await page.locator(".category-procurement h3").evaluate((element) => element.scrollWidth <= element.clientWidth + 1);
+      expect(titleFits, `${locale} procurement title at ${width}px`).toBe(true);
+
+      const sections = page.locator("main > section");
+      const sectionCount = await sections.count();
+      for (let index = 1; index < sectionCount; index++) {
+        const section = sections.nth(index);
+        await section.evaluate((element) => element.scrollIntoView({block: "start"}));
+        await page.waitForTimeout(40);
+        const top = await section.evaluate((element) => element.getBoundingClientRect().top);
+        const headerHeight = await page.locator(".site-header").evaluate((element) => element.getBoundingClientRect().height);
+        expect(top, `${locale} section ${index} at ${width}px`).toBeGreaterThanOrEqual(headerHeight - 1);
+      }
     }
   }
 });
@@ -79,7 +106,7 @@ test("mobile navigation, product prefill, contact links and RFQ flow work", asyn
   await page.locator(".menu-trigger").click();
   await expect(page.locator(".mobile-drawer")).toHaveClass(/open/);
   await expect(page.locator(".mobile-drawer nav")).toBeVisible();
-  await page.screenshot({path: "public/verification/mobile-navigation-open-390.png", fullPage: true});
+  await page.screenshot({path: "verification/mobile-navigation-open-390.png", fullPage: true});
   await page.locator('.mobile-drawer nav a[href="/en/products"]').click();
   await expect(page).toHaveURL(/\/en\/products$/);
 
@@ -132,17 +159,17 @@ test("required screenshot evidence", async ({page}) => {
   for (const [route, file] of captures) {
     await gotoStable(page, route);
     await preloadLazyImages(page);
-    await page.screenshot({path: `public/verification/${file}`, fullPage: true});
+    await page.screenshot({path: `verification/${file}`, fullPage: true});
   }
 
   for (const [locale, width] of [["en", 375], ["en", 390], ["fr", 375], ["fr", 390]] as const) {
     await page.setViewportSize({width, height: 844});
     await gotoStable(page, `/${locale}`);
     await preloadLazyImages(page);
-    await page.screenshot({path: `public/verification/home-${locale}-mobile-${width}.png`, fullPage: true});
+    await page.screenshot({path: `verification/home-${locale}-mobile-${width}.png`, fullPage: true});
   }
   await page.setViewportSize({width: 390, height: 844});
   await gotoStable(page, "/en/rfq");
   await preloadLazyImages(page);
-  await page.screenshot({path: "public/verification/rfq-en-mobile-390.png", fullPage: true});
+  await page.screenshot({path: "verification/rfq-en-mobile-390.png", fullPage: true});
 });

@@ -32,6 +32,17 @@ Without the email variables, the RFQ form does not claim success or create a ref
 
 ## Cloudflare Deployment
 
-Cloudflare’s current Next.js 16 guidance recommends checking the project with `npx vinext check`, then running `npx vinext init` once the Cloudflare Worker project is ready. The check passes the application structure and imports; `next/font` and `next/image` use vinext’s documented Cloudflare behavior.
+Live Worker: <https://akglobal-trading.malikstopher.workers.dev>
 
-Do not hardcode the temporary `workers.dev` URL. Configure `NEXT_PUBLIC_SITE_URL` in Cloudflare for the active public origin, rebuild, and update it when the custom domain becomes canonical.
+This Next.js 16 application uses Cloudflare's vinext adapter. The current `workers.dev` address is configured as `NEXT_PUBLIC_SITE_URL` in `wrangler.jsonc`. Replace that value with the custom domain when it becomes canonical, then rebuild and deploy.
+
+To connect automatic GitHub deployments in Cloudflare:
+
+1. Open the `akglobal-trading` Worker in **Workers & Pages**.
+2. Open **Settings**, then **Builds**, and select **Connect**.
+3. Authorize the Cloudflare GitHub App and select `malikstopher-dev/vieux-kas`.
+4. Use production branch `main` and root directory `/`.
+5. Set the build command to `npm run build:vinext`.
+6. Set the deploy command to `npm run deploy:vinext`.
+
+The GitHub App authorization is a one-time dashboard action. Cloudflare then builds and deploys every push to `main`.

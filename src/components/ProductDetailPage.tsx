@@ -24,9 +24,9 @@ export function ProductDetailPage({locale, copy, page}: {locale: Locale; copy: S
       <div><p className="kicker">{copy.productPage.introLabel}</p><h2>{category.description}</h2></div>
       <div className="product-list"><p>{copy.productPage.listLabel}</p><ul>{category.items.map((item, i) => <li key={item}><span>0{i + 1}</span>{item}</li>)}</ul></div>
     </div></section>
-    <section className="specification-note"><div className="shell"><span>SPEC / AVAILABILITY / COMMERCIAL TERMS</span><p>{copy.common.specification}</p></div></section>
+    <section className="specification-note"><div className="shell"><span>{locale === "en" ? "SPEC / AVAILABILITY / COMMERCIAL TERMS" : "SPÉCIFICATIONS / DISPONIBILITÉ / CONDITIONS"}</span><p>{copy.common.specification}</p></div></section>
     <section className="product-rfq section-pad dark-section"><div className="shell note-grid">
-      <div><p className="kicker">RFQ / {category.title}</p><h2>{copy.productPage.requestTitle}</h2><p>{copy.productPage.requestBody}</p></div>
+      <div><p className="kicker">{locale === "en" ? "RFQ" : "DEVIS"} / {category.title}</p><h2>{copy.productPage.requestTitle}</h2><p>{copy.productPage.requestBody}</p></div>
       <ActionLink href={`${routeFor("rfq", locale)}?${params}`} variant="light">{copy.common.addRfq}</ActionLink>
     </div></section>
   </main>;

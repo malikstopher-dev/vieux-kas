@@ -21,13 +21,13 @@ export function HomePage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
               <ActionLink href={routeFor("rfq", locale)}>{copy.common.quote}</ActionLink>
               <ActionLink href={routeFor("products", locale)} variant="outline">{copy.common.explore}</ActionLink>
             </div>
-            <p className="hero-location">Fourways · Sandton · South Africa</p>
+            <p className="hero-location">Fourways · Sandton · {locale === "en" ? "South Africa" : "Afrique du Sud"}</p>
           </div>
           <div className="hero-visual">
             <Image src="/assets/akglobal/hero/hero-lifting-hook.jpg" alt={locale === "en" ? "Heavy-duty industrial lifting hook and chain" : "Crochet et chaîne de levage industriels"} fill priority fetchPriority="high" sizes="(max-width: 767px) 100vw, 58vw" />
             <div className="hero-visual-overlay" />
             <p className="hero-caption">{copy.home.imageCaption}</p>
-            <div className="hero-vertical">INDUSTRIAL · SUPPLY · PROCUREMENT</div>
+            <div className="hero-vertical">{locale === "en" ? "INDUSTRIAL · SUPPLY · PROCUREMENT" : "INDUSTRIE · FOURNITURE · APPROVISIONNEMENT"}</div>
           </div>
         </div>
         <div className="capability-strip shell" aria-label={copy.home.categoriesTitle}>
@@ -40,7 +40,7 @@ export function HomePage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
           <SectionHeading kicker={copy.home.supplyKicker} title={copy.home.supplyTitle} body={copy.home.supplyBody} />
           <div className="supply-feature">
             <div className="supply-image"><Image src="/assets/akglobal/categories/fasteners-bolting.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 42vw" /></div>
-            <p className="technical-caption">AK / INDUSTRIAL SUPPLY / SOUTH AFRICA</p>
+            <p className="technical-caption">{locale === "en" ? "AK / INDUSTRIAL SUPPLY / SOUTH AFRICA" : "AK / FOURNITURE INDUSTRIELLE / AFRIQUE DU SUD"}</p>
           </div>
         </div>
       </section>
@@ -49,9 +49,9 @@ export function HomePage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
         <div className="shell geography-grid">
           <SectionHeading kicker={copy.home.geographyKicker} title={copy.home.geographyTitle} body={copy.home.geographyBody} light />
           <div className="route-diagram" aria-label={copy.common.based}>
-            <div className="route-place"><span>{copy.home.routeFrom}</span><strong>South<br/>Africa</strong><small>Fourways · Sandton</small></div>
+            <div className="route-place"><span>{copy.home.routeFrom}</span><strong>{locale === "en" ? <>South<br/>Africa</> : <>Afrique<br/>du Sud</>}</strong><small>Fourways · Sandton</small></div>
             <div className="route-line"><i /><span>↔</span><i /></div>
-            <div className="route-place align-right"><span>{copy.home.routeTo}</span><strong>DR<br/>Congo</strong><small>République démocratique du Congo</small></div>
+            <div className="route-place align-right"><span>{copy.home.routeTo}</span><strong>{locale === "en" ? <>DR<br/>Congo</> : "RDC"}</strong><small>République démocratique du Congo</small></div>
           </div>
         </div>
       </section>

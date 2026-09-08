@@ -11,7 +11,7 @@ export function ProductsPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       {copy.categories.map((category, i) => <CategoryCard key={category.key} category={category} locale={locale} index={i} priority={i < 2} />)}
     </div></section>
     <section className="product-note section-pad"><div className="shell note-grid">
-      <div><p className="kicker">RFQ / SOURCING</p><h2>{copy.products.noteTitle}</h2><p>{copy.products.noteBody}</p></div>
+      <div><p className="kicker">{locale === "en" ? "RFQ / SOURCING" : "DEVIS / APPROVISIONNEMENT"}</p><h2>{copy.products.noteTitle}</h2><p>{copy.products.noteBody}</p></div>
       <ActionLink href={routeFor("rfq", locale)}>{copy.common.quote}</ActionLink>
     </div></section>
   </main>;
