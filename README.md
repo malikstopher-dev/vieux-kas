@@ -15,6 +15,7 @@ Validation commands:
 npm run typecheck
 npm run lint
 npm test
+npm run build:next
 npm run build
 npm run test:browser
 ```
@@ -44,7 +45,8 @@ To connect automatic GitHub deployments in Cloudflare:
 2. Open **Settings**, then **Builds**, and select **Connect**.
 3. Authorize the Cloudflare GitHub App and select `malikstopher-dev/vieux-kas`.
 4. Use production branch `main` and root directory `/`.
-5. Set the build command to `npm run build:vinext`.
-6. Set the deploy command to `npm run deploy:vinext`.
+5. Keep the build command as `npm run build`.
+6. Keep the deploy command as `npx wrangler deploy`.
+7. Keep the version command as `npx wrangler versions upload`.
 
 The GitHub App authorization is a one-time dashboard action. Cloudflare then builds and deploys every push to `main`.
