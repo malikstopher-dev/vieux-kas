@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {env} from "cloudflare:workers";
+
 import {allowedExtensions, allowedMimeTypes, buildMailto, buildMessage, buildReference, escapeHtml, maxFileSize, maxTotalFileSize, type RfqPayload, validateRfq} from "@/lib/rfq";
 
 export const runtime = "nodejs";
@@ -23,15 +23,15 @@ export async function POST(request: Request) {
     const invalidFile = files.some((file) => file.size > maxFileSize || !allowedExtensions.includes(getExtension(file.name) as (typeof allowedExtensions)[number]) || !allowedMimeTypes.has(file.type));
     if (invalidFile || totalSize > maxTotalFileSize) return NextResponse.json({status: "error", code: "file"}, {status: 400});
 
-    const apiKey = env.RESEND_API_KEY;
-    const from = env.RFQ_FROM_EMAIL;
+    const apiKey = process.env.RESEND_API_KEY;
+    const from = process.env.RFQ_FROM_EMAIL;
     if (!apiKey || !from) {
       console.error("[RFQ] Missing RESEND_API_KEY or RFQ_FROM_EMAIL");
       const mailto = buildMailto(payload);
       return NextResponse.json({status: "fallback", mailto}, {status: 503});
     }
 
-    const recipients = (env.RFQ_RECIPIENTS ?? "info@ak-globaltrading.com").split(",").map((e: string) => e.trim()).filter(Boolean);
+    const recipients = (process.env.RFQ_RECIPIENTS ?? "info@ak-globaltrading.com").split(",").map((e: string) => e.trim()).filter(Boolean);
     const rows = payload.items.map((item, i) => `<tr><td>${i + 1}</td><td>${escapeHtml(item.description)}</td><td>${escapeHtml(item.partNumber)}</td><td>${escapeHtml(item.specification)}</td><td>${escapeHtml(item.quantity)} ${escapeHtml(item.unit)}</td><td>${escapeHtml(item.notes)}</td></tr>`).join("");
     const details = [
       ["Contact", payload.name], ["Company", payload.company], ["Email", payload.email], ["Telephone", payload.phone],
