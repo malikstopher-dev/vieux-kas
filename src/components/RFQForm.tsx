@@ -6,8 +6,53 @@ import type {Locale, SiteCopy} from "@/lib/site";
 import {maxFileSize, maxTotalFileSize, type RfqItem, type RfqPayload} from "@/lib/rfq";
 import {MinusIcon, PlusIcon} from "./Icons";
 
+const web3FormsAccessKey = "f5583dec-6166-47ca-8780-86e6213028d9";
 const emptyItem = (): RfqItem => ({description: "", partNumber: "", specification: "", quantity: "", unit: "", notes: ""});
 type SubmitState = {type: "idle" | "loading" | "success" | "fallback" | "error"; message?: string; reference?: string; mailto?: string};
+
+function buildReference() {
+  const year = new Date().getUTCFullYear();
+  const token = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `AK-RFQ-${year}-${token}`;
+}
+
+function buildMessage(payload: RfqPayload) {
+  const itemLines = payload.items.map((item, index) => [
+    `ITEM ${index + 1}: ${item.description}`,
+    item.partNumber && `Part number: ${item.partNumber}`,
+    item.specification && `Specification / Grade: ${item.specification}`,
+    `Quantity: ${item.quantity}${item.unit ? ` ${item.unit}` : ""}`,
+    item.notes && `Notes: ${item.notes}`,
+  ].filter(Boolean).join("\n"));
+  return [
+    "AKGLOBAL WEBSITE RFQ",
+    "",
+    `Contact: ${payload.name}`,
+    `Company: ${payload.company}`,
+    `Email: ${payload.email}`,
+    `Telephone: ${payload.phone}`,
+    `Country: ${payload.country}`,
+    `Province / Region: ${payload.province}`,
+    `City: ${payload.city}`,
+    `Delivery location: ${payload.deliveryLocation}`,
+    "",
+    ...itemLines,
+    "",
+    `Required date: ${payload.requiredDate}`,
+    `Additional notes: ${payload.additionalNotes}`,
+    "",
+    "Please attach supporting documents manually before sending.",
+  ].join("\n");
+}
+
+function buildMailto(payload: RfqPayload) {
+  const body = buildMessage(payload);
+  return `mailto:info@ak-globaltrading.com?subject=${encodeURIComponent(`RFQ — ${payload.company}`)}&body=${encodeURIComponent(body)}`;
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"})[character] ?? character);
+}
 
 export function RFQForm({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   const searchParams = useSearchParams();
@@ -58,27 +103,37 @@ export function RFQForm({locale, copy}: {locale: Locale; copy: SiteCopy}) {
 
     setErrors([]);
     setState({type: "loading"});
-    const request = new FormData();
-    request.append("payload", JSON.stringify(payload));
-    attachments.forEach((file) => request.append("attachments", file));
+
+    const submission = new FormData();
+    submission.set("access_key", web3FormsAccessKey);
+    submission.set("subject", `AKGLOBAL RFQ — ${payload.company}`);
+    submission.set("from_name", "AKGLOBAL Trading Website");
+    submission.set("replyto", payload.email);
+    submission.set("name", payload.name);
+    submission.set("email", payload.email);
+    submission.set("message", buildMessage(payload));
+    attachments.forEach((file, index) => submission.append(`attachment_${index + 1}`, file, file.name.replace(/[^a-zA-Z0-9._-]/g, "_")));
 
     try {
-      const response = await fetch("/api/rfq", {method: "POST", body: request});
-      const result = await response.json() as {status: string; code?: string; reference?: string; mailto?: string};
-      if (result.status === "success" && result.reference) {
-        setState({type: "success", message: copy.rfq.success, reference: result.reference});
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: submission,
+      });
+      const data = await res.json().catch(() => null) as {success?: boolean; message?: string} | null;
+
+      if (res.ok && data?.success) {
+        const reference = buildReference();
+        setState({type: "success", message: copy.rfq.success, reference});
         formElement.reset();
         setItems([emptyItem()]);
         return;
       }
-      if (result.status === "fallback") {
-        setState({type: "fallback", message: copy.rfq.fallback, mailto: result.mailto});
-        return;
-      }
-      const localized = result.code === "file" ? copy.rfq.errors.file : result.code === "email" ? copy.rfq.errors.email : result.code === "item" ? copy.rfq.errors.item : copy.rfq.errors.server;
-      setState({type: "error", message: localized, mailto: result.mailto});
+
+      const mailto = buildMailto(payload);
+      setState({type: "fallback", message: copy.rfq.fallback, mailto});
     } catch {
-      setState({type: "error", message: copy.rfq.errors.server});
+      const mailto = buildMailto(payload);
+      setState({type: "fallback", message: copy.rfq.fallback, mailto});
     }
   }
 
