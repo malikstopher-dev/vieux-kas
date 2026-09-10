@@ -3,7 +3,7 @@
 import {useRef, useState} from "react";
 import {useSearchParams} from "next/navigation";
 import type {Locale, SiteCopy} from "@/lib/site";
-import type {RfqItem, RfqPayload} from "@/lib/rfq";
+import {maxFileSize, maxTotalFileSize, type RfqItem, type RfqPayload} from "@/lib/rfq";
 import {MinusIcon, PlusIcon} from "./Icons";
 
 const emptyItem = (): RfqItem => ({description: "", partNumber: "", specification: "", quantity: "", unit: "", notes: ""});
@@ -49,7 +49,7 @@ export function RFQForm({locale, copy}: {locale: Locale; copy: SiteCopy}) {
     if (items.some((item) => !item.description.trim() || !Number.isFinite(Number(item.quantity)) || Number(item.quantity) <= 0)) localErrors.push(copy.rfq.errors.item);
     if (!payload.consent) localErrors.push(copy.rfq.errors.consent);
     const attachments = form.getAll("attachments").filter((value): value is File => value instanceof File && value.size > 0);
-    if (attachments.some((file) => file.size > 8 * 1024 * 1024) || attachments.reduce((sum, file) => sum + file.size, 0) > 15 * 1024 * 1024) localErrors.push(copy.rfq.errors.file);
+    if (attachments.some((file) => file.size > maxFileSize) || attachments.reduce((sum, file) => sum + file.size, 0) > maxTotalFileSize) localErrors.push(copy.rfq.errors.file);
     if (localErrors.length) {
       setErrors([...new Set(localErrors)]);
       requestAnimationFrame(() => summaryRef.current?.focus());

@@ -48,7 +48,7 @@ export const company = {
   owner: "Kasongo",
   phoneDisplay: "082 955 6071",
   phoneHref: "tel:+27829556071",
-  emails: ["aakasongo.77@gmail.com", "AkilimaliglobalT@gmail.com"],
+  emails: ["info@ak-globaltrading.com"],
   address: ["1 Broadacres Drive", "Fourways", "Sandton", "2055", "South Africa"],
 } as const;
 
@@ -193,12 +193,12 @@ export const content = {
       submit: "Send RFQ",
       submitting: "Sending RFQ…",
       countries: ["South Africa", "Democratic Republic of the Congo", "Other"],
-      fileHelp: "PDF, DOC, DOCX, XLS, XLSX, JPG or PNG. Maximum 8 MB per file, 15 MB total.",
+      fileHelp: "PDF, DOC, DOCX, XLS, XLSX, JPG or PNG. Maximum 5 MB per file, 15 MB total.",
       privacy: "Do not upload banking details, supplier quotations or other unnecessary confidential records.",
       errors: {required: "Please complete all required fields.", email: "Please enter a valid email address.", company: "Please enter your company name.", item: "Add a description and valid quantity for each item.", consent: "Please confirm consent before submitting.", file: "Check that attachments use an accepted file type and remain within the size limits.", server: "We could not deliver your RFQ through the website. No enquiry reference was created. Please use the prepared email option below."},
       success: "Your RFQ was delivered successfully.",
       reference: "Enquiry reference",
-      fallback: "Email delivery is not configured on this website yet. Your request has not been sent. Use the prepared email link to contact AKGLOBAL directly.",
+      fallback: "We could not deliver your RFQ through the website right now. Your request has not been sent. Use the prepared email link to contact AKGLOBAL directly.",
       openEmail: "Open prepared email",
     },
     contact: {
@@ -342,12 +342,12 @@ export const content = {
       submit: "Envoyer la demande",
       submitting: "Envoi de la demande…",
       countries: ["Afrique du Sud", "République démocratique du Congo", "Autre"],
-      fileHelp: "PDF, DOC, DOCX, XLS, XLSX, JPG ou PNG. 8 Mo maximum par fichier, 15 Mo au total.",
+      fileHelp: "PDF, DOC, DOCX, XLS, XLSX, JPG ou PNG. 5 Mo maximum par fichier, 15 Mo au total.",
       privacy: "Ne joignez pas de coordonnées bancaires, de devis fournisseurs ou d’autres documents confidentiels non nécessaires.",
       errors: {required: "Veuillez remplir tous les champs obligatoires.", email: "Veuillez saisir une adresse e-mail valide.", company: "Veuillez indiquer le nom de votre entreprise.", item: "Ajoutez une description et une quantité valide pour chaque article.", consent: "Veuillez confirmer votre consentement avant l’envoi.", file: "Vérifiez le type et la taille des pièces jointes.", server: "Nous n’avons pas pu transmettre votre demande par le site. Aucune référence n’a été créée. Utilisez l’option d’e-mail préparé ci-dessous."},
       success: "Votre demande a été transmise avec succès.",
       reference: "Référence de la demande",
-      fallback: "L’envoi d’e-mails n’est pas encore configuré sur ce site. Votre demande n’a pas été envoyée. Utilisez le lien préparé pour contacter directement AKGLOBAL.",
+      fallback: "Nous n’avons pas pu transmettre votre demande par le site pour le moment. Votre demande n’a pas été envoyée. Utilisez le lien préparé pour contacter directement AKGLOBAL.",
       openEmail: "Ouvrir l’e-mail préparé",
     },
     contact: {

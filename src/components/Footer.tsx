@@ -26,6 +26,7 @@ export function Footer({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       <p>© {new Date().getFullYear()} {copy.footer.legal}</p>
       <p>REG. NO. {company.registration}</p>
       <p>{copy.footer.location}</p>
+      <p className="footer-credit">Website by <a href="https://stopher-malik.co.za" rel="noopener noreferrer">Stopher Malik</a> · <a href="https://smk.stopher-malik.co.za" rel="noopener noreferrer">SMK Web Design</a></p>
     </div>
   </footer>;
 }

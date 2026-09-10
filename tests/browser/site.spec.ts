@@ -60,6 +60,22 @@ test("root locale selection and context-preserving switch work", async ({browser
   await context.close();
 });
 
+test("hero motion and transparent navigation effects are applied", async ({page}) => {
+  await gotoStable(page, "/en");
+  const headerStyles = await page.locator(".site-header").evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {background: styles.backgroundColor, backdrop: styles.backdropFilter};
+  });
+  const heroStyles = await page.locator(".hero-visual img").evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {name: styles.animationName, duration: styles.animationDuration, iterations: styles.animationIterationCount};
+  });
+
+  expect(headerStyles.background).toContain("0.76");
+  expect(headerStyles.backdrop).toContain("blur(20px)");
+  expect(heroStyles).toEqual({name: "hero-breathe", duration: "16s", iterations: "infinite"});
+});
+
 test("mobile layouts are overflow-free at every required width", async ({page}) => {
   for (const width of [320, 360, 375, 390, 412, 430]) {
     await page.setViewportSize({width, height: 844});
@@ -101,6 +117,7 @@ test("desktop polish fits and sticky header clears every homepage section", asyn
 });
 
 test("mobile navigation, product prefill, contact links and RFQ flow work", async ({page}) => {
+  await page.route("**/api/rfq", (route) => route.fulfill({status: 503, contentType: "application/json", body: JSON.stringify({status: "fallback", mailto: "mailto:info@ak-globaltrading.com"})}));
   await page.setViewportSize({width: 390, height: 844});
   await gotoStable(page, "/en");
   await page.locator(".menu-trigger").click();
@@ -141,8 +158,7 @@ test("mobile navigation, product prefill, contact links and RFQ flow work", asyn
 
   await gotoStable(page, "/en/contact");
   await expect(page.locator('#main-content a[href="tel:+27829556071"]')).toBeVisible();
-  await expect(page.locator('#main-content a[href="mailto:aakasongo.77@gmail.com"]')).toBeVisible();
-  await expect(page.locator('#main-content a[href="mailto:AkilimaliglobalT@gmail.com"]')).toBeVisible();
+  await expect(page.locator('#main-content a[href="mailto:info@ak-globaltrading.com"]')).toBeVisible();
 });
 
 test("required screenshot evidence", async ({page}) => {

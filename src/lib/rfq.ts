@@ -8,7 +8,7 @@ export const allowedMimeTypes = new Set([
   "image/jpeg",
   "image/png",
 ]);
-export const maxFileSize = 8 * 1024 * 1024;
+export const maxFileSize = 5 * 1024 * 1024;
 export const maxTotalFileSize = 15 * 1024 * 1024;
 
 export type RfqItem = {
@@ -59,7 +59,7 @@ export function buildReference(date = new Date()) {
   return `AK-RFQ-${year}-${token}`;
 }
 
-export function buildMailto(payload: RfqPayload) {
+export function buildMessage(payload: RfqPayload) {
   const itemLines = payload.items.map((item, index) => [
     `ITEM ${index + 1}: ${item.description}`,
     item.partNumber && `Part number: ${item.partNumber}`,
@@ -67,7 +67,7 @@ export function buildMailto(payload: RfqPayload) {
     `Quantity: ${item.quantity}${item.unit ? ` ${item.unit}` : ""}`,
     item.notes && `Notes: ${item.notes}`,
   ].filter(Boolean).join("\n"));
-  const body = [
+  return [
     "AKGLOBAL WEBSITE RFQ",
     "",
     `Contact: ${payload.name}`,
@@ -86,5 +86,9 @@ export function buildMailto(payload: RfqPayload) {
     "",
     "Please attach supporting documents manually before sending.",
   ].join("\n");
-  return `mailto:aakasongo.77@gmail.com?cc=${encodeURIComponent("AkilimaliglobalT@gmail.com")}&subject=${encodeURIComponent(`RFQ — ${payload.company}`)}&body=${encodeURIComponent(body)}`;
+}
+
+export function buildMailto(payload: RfqPayload) {
+  const body = buildMessage(payload);
+  return `mailto:info@ak-globaltrading.com?subject=${encodeURIComponent(`RFQ — ${payload.company}`)}&body=${encodeURIComponent(body)}`;
 }

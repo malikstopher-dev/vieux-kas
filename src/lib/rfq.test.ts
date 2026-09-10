@@ -19,6 +19,7 @@ describe("RFQ validation", () => {
 
   it("builds a mail fallback containing line items", () => {
     const mailto = decodeURIComponent(buildMailto(valid));
+    expect(mailto).toContain("mailto:info@ak-globaltrading.com");
     expect(mailto).toContain("Hex bolts");
     expect(mailto).toContain("Industrial Co");
   });

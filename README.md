@@ -25,19 +25,16 @@ npm run test:browser
 Copy the variable names from `.env.example` into the selected deployment platform. Never commit their values.
 
 - `NEXT_PUBLIC_SITE_URL`: canonical production origin. Set this first to the Cloudflare live URL, then to the final custom domain when DNS is connected.
-- `RESEND_API_KEY`: optional Resend API key for real RFQ email delivery.
-- `RFQ_FROM_EMAIL`: sender on a domain verified with the email provider.
-- `RFQ_RECIPIENTS`: comma-separated business recipients.
-
-Without the email variables, the RFQ form does not claim success or create a reference. It gives the customer a prepared `mailto:` fallback.
+RFQ submissions are delivered to `info@ak-globaltrading.com` through Web3Forms. If the provider cannot accept a submission, the form does not claim success or create a reference; it gives the customer a prepared `mailto:` fallback instead.
 
 ## Cloudflare Deployment
 
-Live Worker: <https://akglobal-trading.malikstopher.workers.dev>
+Live site: <https://ak-globaltrading.com>
+Cloudflare Worker preview: <https://akglobal-trading.malikstopher.workers.dev>
 
 Source repository: <https://github.com/malikstopher-dev/vieux-kas>
 
-This Next.js 16 application uses Cloudflare's vinext adapter. The current `workers.dev` address is configured as `NEXT_PUBLIC_SITE_URL` in `wrangler.jsonc`. Replace that value with the custom domain when it becomes canonical, then rebuild and deploy.
+This Next.js 16 application uses Cloudflare's vinext adapter. The canonical production domain `https://ak-globaltrading.com` is configured as `NEXT_PUBLIC_SITE_URL` in `wrangler.jsonc` for all SEO metadata, sitemaps, canonical URLs, and hreflang links.
 
 To connect automatic GitHub deployments in Cloudflare:
 
