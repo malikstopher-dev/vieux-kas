@@ -37,7 +37,13 @@ export async function POST(request: Request) {
 
     let deliveryResponse: Response;
     try {
-      deliveryResponse = await fetch("https://api.web3forms.com/submit", {method: "POST", body: submission});
+      deliveryResponse = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: submission,
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        },
+      });
     } catch {
       return NextResponse.json({status: "fallback", mailto}, {status: 503});
     }
