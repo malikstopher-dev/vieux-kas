@@ -6,11 +6,11 @@ import {ArrowIcon} from "./Icons";
 
 type Category = SiteCopy["categories"][number];
 
-export function CategoryCard({category, locale, index, priority = false}: {category: Category; locale: Locale; index: number; priority?: boolean}) {
+export function CategoryCard({category, locale, index, priority = false, sizes = "(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw"}: {category: Category; locale: Locale; index: number; priority?: boolean; sizes?: string}) {
   return <article className={`category-card category-${category.key}`}>
     <Link href={routeFor(category.route, locale)} aria-label={category.title}>
       <div className="category-image">
-        <Image src={categoryImages[category.key]} alt="" fill priority={priority} sizes="(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 25vw" />
+        <Image src={categoryImages[category.key]} alt="" fill priority={priority} sizes={sizes} />
         <div className="category-shade" />
       </div>
       <div className="category-copy">

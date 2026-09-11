@@ -6,8 +6,9 @@ const routes = [
 ];
 
 async function gotoStable(page: Page, path: string) {
-  const response = await page.goto(path, {waitUntil: "networkidle"});
+  const response = await page.goto(path, {waitUntil: "domcontentloaded"});
   expect(response?.status(), path).toBe(200);
+  await page.locator("main h1").waitFor({state: "visible"});
   await page.waitForTimeout(250);
 }
 
@@ -23,7 +24,10 @@ async function preloadLazyImages(page: Page) {
     await page.evaluate((top) => window.scrollTo(0, top), position);
     await page.waitForTimeout(80);
   }
-  await page.waitForLoadState("networkidle");
+  await page.evaluate(async () => Promise.all(Array.from(document.images).map((image) => image.complete ? Promise.resolve() : new Promise<void>((resolve) => {
+    image.addEventListener("load", () => resolve(), {once: true});
+    image.addEventListener("error", () => resolve(), {once: true});
+  }))));
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(150);
 }
@@ -62,18 +66,56 @@ test("root permanently redirects to the default locale and context-preserving sw
 
 test("hero motion and transparent navigation effects are applied", async ({page}) => {
   await gotoStable(page, "/en");
-  const headerStyles = await page.locator(".site-header").evaluate((element) => {
+  const initialHeader = await page.locator(".site-header").evaluate((element) => {
     const styles = getComputedStyle(element);
-    return {background: styles.backgroundColor, backdrop: styles.backdropFilter};
+    return {background: styles.backgroundColor, height: element.getBoundingClientRect().height};
   });
-  const heroStyles = await page.locator(".hero-visual img").evaluate((element) => {
+  const heroStyles = await page.locator(".premium-hero-media img").evaluate((element) => {
     const styles = getComputedStyle(element);
     return {name: styles.animationName, duration: styles.animationDuration, iterations: styles.animationIterationCount};
   });
+  await page.evaluate(() => window.scrollTo(0, 500));
+  await expect(page.locator(".site-header")).toHaveClass(/scrolled/);
+  const compactHeader = await page.locator(".site-header").evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {height: element.getBoundingClientRect().height, backdrop: styles.backdropFilter, shadow: styles.boxShadow};
+  });
 
-  expect(headerStyles.background).toContain("0.76");
-  expect(headerStyles.backdrop).toContain("blur(20px)");
-  expect(heroStyles).toEqual({name: "hero-breathe", duration: "16s", iterations: "infinite"});
+  expect(initialHeader.background).toContain("0.9");
+  expect(compactHeader.height).toBeLessThan(initialHeader.height);
+  expect(compactHeader.backdrop).toContain("blur(18px)");
+  expect(compactHeader.shadow).not.toBe("none");
+  expect(heroStyles).toEqual({name: "hero-breathe", duration: "18s", iterations: "infinite"});
+});
+
+test("top-level heroes select unique V4 desktop and mobile artwork", async ({page}) => {
+  const heroes = [
+    ["/en", "02-home-industrial-operations"],
+    ["/en/about", "03-company-executive-overview"],
+    ["/en/products", "05-products-rigging-supplies"],
+    ["/en/procurement", "07-procurement-global-logistics"],
+    ["/en/industries", "09-industries-operations"],
+    ["/en/rfq", "08-procurement-sourcing-logistics"],
+    ["/en/contact", "10-contact-executive-office"],
+  ] as const;
+  const desktopSources = new Set<string>();
+
+  await page.setViewportSize({width: 1440, height: 900});
+  for (const [route, asset] of heroes) {
+    await gotoStable(page, route);
+    const source = page.locator(".premium-hero-media source");
+    const image = page.locator(".premium-hero-media img");
+    await expect(source).toHaveAttribute("srcset", new RegExp(`${asset.replace("executive-overview", "site-oversight")}-mobile\\.webp`));
+    await expect(image).toHaveAttribute("src", new RegExp(`${asset}-hero\\.webp`));
+    desktopSources.add(await image.getAttribute("src") ?? "");
+  }
+  expect(desktopSources.size).toBe(heroes.length);
+
+  await page.setViewportSize({width: 390, height: 844});
+  for (const [route] of heroes) {
+    await gotoStable(page, route);
+    expect(await page.locator(".premium-hero-media img").evaluate((image: HTMLImageElement) => image.currentSrc)).toContain("/mobile/");
+  }
 });
 
 test("mobile layouts are overflow-free at every required width", async ({page}) => {
@@ -82,7 +124,7 @@ test("mobile layouts are overflow-free at every required width", async ({page}) 
     for (const locale of ["en", "fr"]) {
       await gotoStable(page, `/${locale}`);
       await assertNoHorizontalScroll(page, `${locale} ${width}px`);
-      const heroBox = await page.locator(".hero-copy h1").boundingBox();
+      const heroBox = await page.locator(".premium-hero-title").boundingBox();
       expect(heroBox?.x ?? -1).toBeGreaterThanOrEqual(0);
       expect((heroBox?.x ?? 0) + (heroBox?.width ?? width)).toBeLessThanOrEqual(width);
       const procurementTitle = page.locator(".category-procurement h3");

@@ -1,45 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
+import {heroAssets} from "@/lib/heroAssets";
 import type {Locale, SiteCopy} from "@/lib/site";
 import {routeFor} from "@/lib/site";
 import {ActionLink} from "./ActionLink";
 import {CategoryCard} from "./CategoryCard";
 import {ArrowIcon} from "./Icons";
+import {PremiumHero} from "./PremiumHero";
+import {ResponsivePicture} from "./ResponsivePicture";
 import {SectionHeading} from "./SectionHeading";
 
 export function HomePage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   const industries = copy.industries.items.slice(0, 6);
   return <>
     <main>
-      <section className="home-hero">
-        <div className="hero-grid shell">
-          <div className="hero-copy">
-            <p className="hero-eyebrow"><span />{copy.home.heroEyebrow}</p>
-            <h1>{copy.home.heroTitle.map((line, i) => <span key={line} className={i > 1 ? "outline-word" : ""}>{line}</span>)}</h1>
-            <p className="hero-body">{copy.home.heroBody}</p>
-            <div className="hero-actions">
-              <ActionLink href={routeFor("rfq", locale)}>{copy.common.quote}</ActionLink>
-              <ActionLink href={routeFor("products", locale)} variant="outline">{copy.common.explore}</ActionLink>
-            </div>
-            <p className="hero-location">Fourways · Sandton · {locale === "en" ? "South Africa" : "Afrique du Sud"}</p>
-          </div>
-          <div className="hero-visual">
-            <Image src="/assets/akglobal/hero/hero-lifting-hook.jpg" alt={locale === "en" ? "Heavy-duty industrial lifting hook and chain" : "Crochet et chaîne de levage industriels"} fill priority fetchPriority="high" sizes="(max-width: 767px) 100vw, 58vw" />
-            <div className="hero-visual-overlay" />
-            <p className="hero-caption">{copy.home.imageCaption}</p>
-            <div className="hero-vertical">{locale === "en" ? "INDUSTRIAL · SUPPLY · PROCUREMENT" : "INDUSTRIE · FOURNITURE · APPROVISIONNEMENT"}</div>
-          </div>
-        </div>
-        <div className="capability-strip shell" aria-label={copy.home.categoriesTitle}>
+      <PremiumHero
+        asset={heroAssets.homePrimary}
+        imageAlt={locale === "en" ? "AKGLOBAL industrial operations and lifting activity at sunset" : "Opérations industrielles et activité de levage AKGLOBAL au coucher du soleil"}
+        kicker={copy.home.heroEyebrow}
+        title={copy.home.heroTitle.map((line, index) => <span key={line} className={index > 1 ? "outline-word" : ""}>{line}</span>)}
+        lead={copy.home.heroBody}
+        size="home"
+        overlay="strong"
+        primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}
+        secondaryAction={{href: routeFor("products", locale), label: copy.common.explore}}
+        meta={<>Fourways · Sandton · {locale === "en" ? "South Africa" : "Afrique du Sud"}</>}
+        caption={copy.home.imageCaption}
+        footer={<div className="capability-strip shell" aria-label={copy.home.categoriesTitle}>
           {copy.categories.map((category, i) => <Link href={routeFor(category.route, locale)} key={category.key}><span>0{i + 1}</span>{category.title}<ArrowIcon /></Link>)}
-        </div>
-      </section>
+        </div>}
+      />
 
       <section className="supply-intro section-pad">
         <div className="shell supply-layout">
           <SectionHeading kicker={copy.home.supplyKicker} title={copy.home.supplyTitle} body={copy.home.supplyBody} />
           <div className="supply-feature">
-            <div className="supply-image"><Image src="/assets/akglobal/categories/fasteners-bolting.jpg" alt="" fill sizes="(max-width: 767px) 100vw, 42vw" /></div>
+            <div className="supply-image"><ResponsivePicture desktopSrc={heroAssets.homeSecondary.desktop} mobileSrc={heroAssets.homeSecondary.mobile} alt={locale === "en" ? "AKGLOBAL oversight of global industrial logistics" : "Supervision AKGLOBAL de la logistique industrielle internationale"} /></div>
             <p className="technical-caption">{locale === "en" ? "AK / INDUSTRIAL SUPPLY / SOUTH AFRICA" : "AK / FOURNITURE INDUSTRIELLE / AFRIQUE DU SUD"}</p>
           </div>
         </div>

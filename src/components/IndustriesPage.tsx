@@ -1,11 +1,21 @@
+import {heroAssets} from "@/lib/heroAssets";
 import type {Locale, SiteCopy} from "@/lib/site";
 import {routeFor} from "@/lib/site";
 import {ActionLink} from "./ActionLink";
-import {InnerHero} from "./InnerHero";
+import {PremiumHero} from "./PremiumHero";
 
 export function IndustriesPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   return <main>
-    <InnerHero kicker={copy.industries.kicker} title={copy.industries.title} lead={copy.industries.lead} image="/assets/akglobal/hero/hero-industrial-warehouse.jpg" imageAlt={locale === "en" ? "Industrial operations environment" : "Environnement d’opérations industrielles"} />
+    <PremiumHero
+      asset={heroAssets.industriesPrimary}
+      imageAlt={locale === "en" ? "AKGLOBAL team overseeing industrial processing and logistics operations" : "Équipe AKGLOBAL supervisant des opérations industrielles et logistiques"}
+      kicker={copy.industries.kicker}
+      title={copy.industries.title}
+      lead={copy.industries.lead}
+      variant="split"
+      overlay="balanced"
+      primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}
+    />
     <section className="industries-page section-pad"><div className="shell">
       <div className="industries-grid">{copy.industries.items.map((item, i) => <article key={item}><span>{String(i + 1).padStart(2, "0")}</span><h2>{item}</h2><div className="industry-cross" aria-hidden="true">+</div></article>)}</div>
       <p className="boundary-note">{copy.industries.disclaimer}</p>

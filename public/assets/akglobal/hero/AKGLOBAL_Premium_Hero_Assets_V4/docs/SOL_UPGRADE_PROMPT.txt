@@ -1,0 +1,68 @@
+MISSION: AK GLOBAL TRADING — HERO CONSISTENCY + PREMIUM VISUAL UPGRADE
+MODEL: GPT-5.6 Sol, High
+
+Do not rebuild the site. Upgrade the existing production design system locally first.
+
+PROBLEM
+The current top-level routes are visually inconsistent: some use cinematic image-backed heroes while others use plain white editorial headings. Standardize them into one premium AK Global visual family without making every page identical.
+
+USE THE PROVIDED V4 ASSET PACK
+Read docs/ASSET_MAP.txt first.
+Copy assets into the project's public asset tree and use stable browser-safe paths.
+
+REQUIRED HERO SYSTEM
+Create one reusable responsive hero component with variants, e.g. editorial-dark, split-image, cinematic-fullbleed, but EVERY top-level page must include deliberate photography.
+
+Recommended mapping:
+- Home: keep current hero and add/use Home A/B as additional distinct slides if useful.
+- Company: Company primary.
+- Products: Products primary.
+- Procurement: Procurement primary.
+- Industries: Industries primary.
+- Contact: Contact primary.
+- RFQ: use procurement alternate or a purpose-built compact procurement hero.
+
+DESKTOP
+- 16:9 cinematic source
+- hero height roughly 560–720px depending on route
+- strong but restrained editorial typography
+- use directional gradient behind copy, around 35–58% darkness depending on photo
+- preserve visible industrial detail
+
+MOBILE
+- use the matching mobile source via <picture>, not a crop of the desktop image
+- 52–72svh depending on copy
+- headings use clamp(), generally ~34–46px
+- 20–24px side padding
+- safe object positioning
+- no clipped logos, faces, machinery or CTAs
+
+VISUAL UPGRADE
+- retain AK black/white/magenta identity
+- refine page spacing and hierarchy
+- add restrained image reveals / hover scale 1.02 where useful
+- improve transitions between hero and body sections
+- eliminate large accidental blank white zones
+- avoid repeating the exact same image across multiple top-level pages
+- do not add fake partners, fake metrics or fake testimonials
+
+NAVBAR
+Preserve functionality but polish it further:
+- sticky white/translucent premium header
+- real AK logo
+- animated magenta active-route underline
+- subtle compact-on-scroll transition
+- premium RFQ CTA
+- strong mobile drawer with large touch targets
+- no horizontal overflow
+
+SEO / ACCESSIBILITY
+Preserve canonical, hreflang, sitemap, robots, metadata and language routes.
+Use descriptive alt text; decorative hero background images may use empty alt when text equivalent exists.
+Respect prefers-reduced-motion.
+
+VERIFY MANUALLY
+Audit desktop, tablet and mobile for /en and /fr top-level routes.
+Do not claim complete from build/tests alone.
+Take screenshots and report remaining visual inconsistencies.
+Do not deploy until local approval.

@@ -1,14 +1,25 @@
-import Image from "next/image";
+import {heroAssets} from "@/lib/heroAssets";
 import type {Locale, SiteCopy} from "@/lib/site";
 import {company, routeFor} from "@/lib/site";
 import {ActionLink} from "./ActionLink";
-import {InnerHero} from "./InnerHero";
+import {PremiumHero} from "./PremiumHero";
+import {ResponsivePicture} from "./ResponsivePicture";
 
 export function AboutPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   return <main>
-    <InnerHero kicker={copy.about.kicker} title={copy.about.title} lead={copy.about.lead} image="/assets/akglobal/hero/hero-industrial-warehouse.jpg" imageAlt={locale === "en" ? "Industrial warehouse environment" : "Environnement d’entrepôt industriel"} />
+    <PremiumHero
+      asset={heroAssets.companyPrimary}
+      imageAlt={locale === "en" ? "AKGLOBAL executive industrial oversight office" : "Bureau de supervision industrielle AKGLOBAL"}
+      kicker={copy.about.kicker}
+      title={copy.about.title}
+      lead={copy.about.lead}
+      variant="split"
+      overlay="strong"
+      primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}
+      secondaryAction={{href: routeFor("contact", locale), label: copy.nav.contact}}
+    />
     <section className="editorial-section section-pad"><div className="shell editorial-grid">
-      <div className="editorial-mark"><Image src="/assets/akglobal/brand/akglobal-symbol-transparent.png" alt="" width={1026} height={600} sizes="260px" /></div>
+      <div className="editorial-media"><ResponsivePicture desktopSrc={heroAssets.companySecondary.desktop} mobileSrc={heroAssets.companySecondary.mobile} alt={locale === "en" ? "AKGLOBAL industrial office and sourcing workspace" : "Espace de travail industriel et d’approvisionnement AKGLOBAL"} /></div>
       <div className="editorial-content">{copy.about.sections.map(([title, body], i) => <article key={title}><span>0{i + 1}</span><div><h2>{title}</h2><p>{body}</p></div></article>)}</div>
     </div></section>
     <section className="company-details section-pad dark-section"><div className="shell">

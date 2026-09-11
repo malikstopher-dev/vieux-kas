@@ -1,14 +1,25 @@
 import Image from "next/image";
+import {heroAssets} from "@/lib/heroAssets";
 import type {Locale, SiteCopy} from "@/lib/site";
 import {company, routeFor} from "@/lib/site";
 import {ActionLink} from "./ActionLink";
 import {LocationIcon, MailIcon, PhoneIcon} from "./Icons";
-import {InnerHero} from "./InnerHero";
+import {PremiumHero} from "./PremiumHero";
 
 export function ContactPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   const mapUrl = "https://www.google.com/maps/search/?api=1&query=1+Broadacres+Drive+Fourways+Sandton+2055+South+Africa";
   return <main>
-    <InnerHero kicker={copy.contact.kicker} title={copy.contact.title} lead={copy.contact.lead} />
+    <PremiumHero
+      asset={heroAssets.contactPrimary}
+      imageAlt={locale === "en" ? "AKGLOBAL executive office overlooking industrial operations" : "Bureau de direction AKGLOBAL donnant sur les opérations industrielles"}
+      kicker={copy.contact.kicker}
+      title={copy.contact.title}
+      lead={copy.contact.lead}
+      overlay="strong"
+      primaryAction={{href: `mailto:${company.emails[0]}`, label: copy.contact.write}}
+      secondaryAction={{href: company.phoneHref, label: copy.contact.call}}
+      meta={<>Fourways · Sandton · {locale === "en" ? "South Africa" : "Afrique du Sud"}</>}
+    />
     <section className="contact-section section-pad"><div className="shell contact-grid">
       <div className="contact-identity">
         <Image src="/assets/akglobal/brand/akglobal-logo-transparent.png" alt="AKGLOBAL Trading Pty" width={1010} height={640} sizes="280px" />

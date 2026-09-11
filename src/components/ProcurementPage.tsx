@@ -1,16 +1,26 @@
+import {heroAssets} from "@/lib/heroAssets";
 import type {Locale, SiteCopy} from "@/lib/site";
 import {routeFor} from "@/lib/site";
 import {ActionLink} from "./ActionLink";
-import {InnerHero} from "./InnerHero";
+import {PremiumHero} from "./PremiumHero";
 
 export function ProcurementPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
   return <main>
-    <InnerHero kicker={copy.procurement.kicker} title={copy.procurement.title} lead={copy.procurement.lead} image="/assets/akglobal/categories/procurement-sourcing.jpg" imageAlt={locale === "en" ? "Industrial warehouse prepared for procurement and supply" : "Entrepôt industriel pour l’approvisionnement"} />
+    <PremiumHero
+      asset={heroAssets.procurementPrimary}
+      imageAlt={locale === "en" ? "AKGLOBAL warehouse, freight and global logistics operations" : "Entrepôt, fret et opérations logistiques internationales AKGLOBAL"}
+      kicker={copy.procurement.kicker}
+      title={copy.procurement.title}
+      lead={copy.procurement.lead}
+      overlay="strong"
+      primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}
+      secondaryAction={{href: "#procurement-process", label: copy.common.learnMore}}
+    />
     <section className="accepts-section section-pad"><div className="shell accepts-grid">
       <div><p className="kicker">{locale === "en" ? "RFQ / INPUT" : "DEVIS / INFORMATIONS"}</p><h2>{copy.procurement.acceptsTitle}</h2><p>{copy.common.specification}</p></div>
       <ul>{copy.procurement.accepts.map((item, i) => <li key={item}><span>{String(i + 1).padStart(2, "0")}</span>{item}</li>)}</ul>
     </div></section>
-    <section className="procurement-process section-pad offwhite-section"><div className="shell">
+    <section id="procurement-process" className="procurement-process section-pad offwhite-section"><div className="shell">
       <div className="process-title"><p className="kicker">{locale === "en" ? "PROCESS / 01—04" : "PROCESSUS / 01—04"}</p><h2>{copy.procurement.processTitle}</h2></div>
       <div className="procurement-steps">{copy.procurement.process.map(([number, title, body]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
       <p className="boundary-note">{copy.procurement.boundary}</p>
