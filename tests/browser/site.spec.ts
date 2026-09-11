@@ -48,11 +48,11 @@ test("all localized routes render without browser or network errors", async ({pa
   expect(badResponses).toEqual([]);
 });
 
-test("root locale selection and context-preserving switch work", async ({browser}) => {
+test("root permanently redirects to the default locale and context-preserving switch works", async ({browser}) => {
   const context = await browser.newContext({locale: "fr-FR", extraHTTPHeaders: {"Accept-Language": "fr-FR,fr;q=0.9"}});
   const page = await context.newPage();
   await page.goto("/", {waitUntil: "networkidle"});
-  await expect(page).toHaveURL(/\/fr$/);
+  await expect(page).toHaveURL(/\/en$/);
   await gotoStable(page, "/en/products/fasteners");
   await page.locator('.locale-switch a[lang="fr"]').click();
   await expect(page).toHaveURL(/\/fr\/produits\/fixations-boulonnerie$/);

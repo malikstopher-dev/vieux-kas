@@ -8,6 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: page === "home" ? "weekly" as const : "monthly" as const,
     priority: page === "home" ? 1 : page === "rfq" ? 0.9 : 0.7,
-    alternates: {languages: {en: `${siteUrl}${routeFor(page, "en")}`, fr: `${siteUrl}${routeFor(page, "fr")}`}},
+    alternates: {languages: {en: `${siteUrl}${routeFor(page, "en")}`, fr: `${siteUrl}${routeFor(page, "fr")}`, "x-default": `${siteUrl}${routeFor(page, "en")}`}},
   })));
 }
