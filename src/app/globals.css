@@ -378,7 +378,7 @@ main section {scroll-margin-top: calc(var(--header-height) + 24px);}
   .menu-trigger {display: grid; place-items: center;}
   .menu-trigger svg {transition: transform .25s var(--ease);}
   .menu-trigger:hover svg {transform: scale(1.06);}
-  .mobile-drawer {position: fixed; z-index: 110; inset: var(--header-height) 0 0; background: var(--white); color: var(--ink); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;}
+  .mobile-drawer {position: fixed; z-index: 110; inset: var(--header-height) 0 0; display: block; background: var(--white); color: var(--ink); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: opacity .28s var(--ease), transform .28s var(--ease), visibility .28s; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;}
   .mobile-drawer.open {visibility: visible; opacity: 1; transform: translateY(0);}
   .mobile-drawer-inner {display: flex; flex-direction: column; min-height: 100%; padding-top: 24px; padding-bottom: max(32px, env(safe-area-inset-bottom));}
   .mobile-nav {display: flex; flex-direction: column;}
