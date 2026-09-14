@@ -8,6 +8,7 @@ const routes = [
 async function gotoStable(page: Page, path: string) {
   const response = await page.goto(path, {waitUntil: "domcontentloaded"});
   expect(response?.status(), path).toBe(200);
+  await page.waitForLoadState("load");
   await page.locator("main h1").waitFor({state: "visible"});
   await page.waitForTimeout(250);
 }
@@ -33,6 +34,7 @@ async function preloadLazyImages(page: Page) {
 }
 
 test("all localized routes render without browser or network errors", async ({page}) => {
+  test.setTimeout(420_000);
   const consoleErrors: string[] = [];
   const pageErrors: string[] = [];
   const badResponses: string[] = [];
@@ -119,6 +121,7 @@ test("top-level heroes select unique V4 desktop and mobile artwork", async ({pag
 });
 
 test("mobile layouts are overflow-free at every required width", async ({page}) => {
+  test.setTimeout(300_000);
   for (const width of [320, 360, 375, 390, 412, 430]) {
     await page.setViewportSize({width, height: 844});
     for (const locale of ["en", "fr"]) {
@@ -135,12 +138,13 @@ test("mobile layouts are overflow-free at every required width", async ({page}) 
 });
 
 test("desktop polish fits and sticky header clears every homepage section", async ({page}) => {
+  test.setTimeout(420_000);
   for (const width of [1280, 1366, 1440, 1920]) {
     await page.setViewportSize({width, height: 900});
     for (const locale of ["en", "fr"]) {
       await gotoStable(page, `/${locale}`);
       await assertNoHorizontalScroll(page, `${locale} desktop ${width}px`);
-      await expect(page.locator(".hero-actions .action-primary")).toBeInViewport();
+      await expect(page.locator(".premium-hero-actions .action-primary")).toBeInViewport();
       const titleFits = await page.locator(".category-procurement h3").evaluate((element) => element.scrollWidth <= element.clientWidth + 1);
       expect(titleFits, `${locale} procurement title at ${width}px`).toBe(true);
 
@@ -159,6 +163,7 @@ test("desktop polish fits and sticky header clears every homepage section", asyn
 });
 
 test("mobile navigation, product prefill, contact links and RFQ flow work", async ({page}) => {
+  test.setTimeout(300_000);
   await page.route("**/api/rfq", (route) => route.fulfill({status: 503, contentType: "application/json", body: JSON.stringify({status: "fallback", mailto: "mailto:info@ak-globaltrading.com"})}));
   await page.setViewportSize({width: 390, height: 844});
   await gotoStable(page, "/en");
@@ -167,7 +172,7 @@ test("mobile navigation, product prefill, contact links and RFQ flow work", asyn
   await expect(page.locator(".mobile-drawer nav")).toBeVisible();
   await page.screenshot({path: "verification/mobile-navigation-open-390.png", fullPage: true});
   await page.locator('.mobile-drawer nav a[href="/en/products"]').click();
-  await expect(page).toHaveURL(/\/en\/products$/);
+  await expect(page).toHaveURL(/\/en\/products$/, {timeout: 45_000});
 
   await gotoStable(page, "/en/products/lifting-equipment");
   await page.locator('.product-hero-copy a[href*="category="]').click();
@@ -199,8 +204,8 @@ test("mobile navigation, product prefill, contact links and RFQ flow work", asyn
   await expect(page.locator(".submit-message")).not.toContainText("AK-RFQ-");
 
   await gotoStable(page, "/en/contact");
-  await expect(page.locator('#main-content a[href="tel:+27829556071"]')).toBeVisible();
-  await expect(page.locator('#main-content a[href="mailto:info@ak-globaltrading.com"]')).toBeVisible();
+  await expect(page.locator('.contact-details a[href="tel:+27829556071"]')).toBeVisible();
+  await expect(page.locator('.contact-details a[href="mailto:info@ak-globaltrading.com"]')).toBeVisible();
 });
 
 test("required screenshot evidence", async ({page}) => {

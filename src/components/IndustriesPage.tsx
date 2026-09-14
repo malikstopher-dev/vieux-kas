@@ -12,6 +12,8 @@ export function IndustriesPage({locale, copy}: {locale: Locale; copy: SiteCopy})
       kicker={copy.industries.kicker}
       title={copy.industries.title}
       lead={copy.industries.lead}
+      mobileTitle={locale === "en" ? <><span>Industrial supply</span><span className="outline-word">across critical sectors.</span></> : <><span>Fourniture industrielle</span><span className="outline-word">pour secteurs critiques.</span></>}
+      mobileLead={locale === "en" ? "Engineering, construction, mining, maintenance, manufacturing — we support the work." : "Ingénierie, construction, mines, maintenance, fabrication — nous accompagnons le travail."}
       variant="split"
       overlay="balanced"
       primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}

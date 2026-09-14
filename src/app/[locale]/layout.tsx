@@ -36,7 +36,7 @@ export default async function LocaleLayout({children, params}: {children: React.
     areaServed: [{"@type": "Country", name: "South Africa"}, {"@type": "Country", name: "Democratic Republic of the Congo"}],
   };
 
-  return <html lang={locale === "en" ? "en-ZA" : "fr-CD"} className={`${inter.variable} ${playfair.variable}`}>
+  return <html lang={locale === "en" ? "en-ZA" : "fr-CD"} className={`${inter.variable} ${playfair.variable}`} data-scroll-behavior="smooth">
     <body>
       <a className="skip-link" href="#main-content">{locale === "en" ? "Skip to content" : "Aller au contenu"}</a>
       <Header locale={locale} copy={copy} />

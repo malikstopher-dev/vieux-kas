@@ -15,6 +15,8 @@ type Props = {
   kicker: string;
   title: ReactNode;
   lead: string;
+  mobileTitle?: ReactNode;
+  mobileLead?: string;
   variant?: "cinematic" | "split";
   size?: "home" | "inner" | "compact";
   tone?: "dark" | "light";
@@ -35,6 +37,8 @@ export function PremiumHero({
   kicker,
   title,
   lead,
+  mobileTitle,
+  mobileLead,
   variant = "cinematic",
   size = "inner",
   tone = "dark",
@@ -60,8 +64,14 @@ export function PremiumHero({
     <div className="shell premium-hero-inner">
       <div className="premium-hero-copy">
         <p className="hero-eyebrow"><span />{kicker}</p>
-        <h1 className="premium-hero-title">{title}</h1>
-        <p className="premium-hero-lead">{lead}</p>
+        <h1 className="premium-hero-title">
+          <span className="premium-hero-title-desktop">{title}</span>
+          <span className="premium-hero-title-mobile">{mobileTitle ?? title}</span>
+        </h1>
+        <p className="premium-hero-lead">
+          <span className="premium-hero-lead-desktop">{lead}</span>
+          <span className="premium-hero-lead-mobile">{mobileLead ?? lead}</span>
+        </p>
         {(primaryAction || secondaryAction) && <div className="premium-hero-actions">
           {primaryAction && <ActionLink href={primaryAction.href} variant={primaryAction.variant}>{primaryAction.label}</ActionLink>}
           {secondaryAction && <ActionLink href={secondaryAction.href} variant={secondaryAction.variant ?? "outline"}>{secondaryAction.label}</ActionLink>}

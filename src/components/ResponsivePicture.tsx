@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 type Props = {
   desktopSrc: string;
   mobileSrc: string;
@@ -10,11 +8,7 @@ type Props = {
 
 export function ResponsivePicture({desktopSrc, mobileSrc, alt, className = "", priority = false}: Props) {
   return <>
-    {priority && <>
-      <link rel="preload" as="image" href={mobileSrc} media="(max-width: 767px)" />
-      <link rel="preload" as="image" href={desktopSrc} media="(min-width: 768px)" />
-    </>}
-    <picture className={className}>
+    <picture className={className} style={{backgroundColor: "#111318"}}>
       <source media="(max-width: 767px)" srcSet={mobileSrc} />
       <img
         src={desktopSrc}
@@ -24,6 +18,7 @@ export function ResponsivePicture({desktopSrc, mobileSrc, alt, className = "", p
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         decoding="async"
+        style={{backgroundColor: "#111318"}}
       />
     </picture>
   </>;

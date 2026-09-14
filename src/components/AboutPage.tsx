@@ -13,6 +13,8 @@ export function AboutPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       kicker={copy.about.kicker}
       title={copy.about.title}
       lead={copy.about.lead}
+      mobileTitle={locale === "en" ? <><span>Industrial trading.</span><span className="outline-word">Built around your requirement.</span></> : <><span>Négoce industriel.</span><span className="outline-word">Organisé autour de votre besoin.</span></>}
+      mobileLead={locale === "en" ? "South African industrial trading and procurement serving SA and the DRC." : "Négoce et approvisionnement industriel sud-africain pour l'Afrique du Sud et la RDC."}
       variant="split"
       overlay="strong"
       primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}

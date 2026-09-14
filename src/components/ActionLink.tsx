@@ -9,5 +9,6 @@ type Props = {
 };
 
 export function ActionLink({href, children, variant = "primary", className = ""}: Props) {
-  return <Link href={href} className={`action-link action-${variant} ${className}`}><span>{children}</span><ArrowIcon /></Link>;
+  const isText = variant === "text";
+  return <Link href={href} className={`action-link action-${variant} ${className}`}>{isText ? children : <span>{children}</span>}{isText ? <ArrowIcon className="text-arrow" /> : <ArrowIcon />}</Link>;
 }

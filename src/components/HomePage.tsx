@@ -20,6 +20,8 @@ export function HomePage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
         kicker={copy.home.heroEyebrow}
         title={copy.home.heroTitle.map((line, index) => <span key={line} className={index > 1 ? "outline-word" : ""}>{line}</span>)}
         lead={copy.home.heroBody}
+        mobileTitle={locale === "en" ? <><span>Industrial</span><span className="outline-word">supply.</span><span>Built around</span><span className="outline-word">your requirement.</span></> : <><span>Fourniture</span><span className="outline-word">industrielle.</span><span>Conçue pour</span><span className="outline-word">votre besoin.</span></>}
+        mobileLead={locale === "en" ? "Equipment, lifting, fasteners and procurement from South Africa to the DRC." : "Équipements, levage, boulonnerie et approvisionnement de l'Afrique du Sud vers la RDC."}
         size="home"
         overlay="strong"
         primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}

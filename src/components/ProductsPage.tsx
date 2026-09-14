@@ -14,6 +14,8 @@ export function ProductsPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       kicker={copy.products.kicker}
       title={copy.products.title}
       lead={copy.products.lead}
+      mobileTitle={locale === "en" ? <><span>Equipment & hardware</span><span className="outline-word">for real operations.</span></> : <><span>Équipements & fournitures</span><span className="outline-word">pour vraies opérations.</span></>}
+      mobileLead={locale === "en" ? "Lifting, fasteners, hardware — sourced to your specification." : "Levage, boulonnerie, fournitures — sourcés selon votre spécification."}
       overlay="balanced"
       primaryAction={{href: "#product-categories", label: copy.common.explore}}
       secondaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}

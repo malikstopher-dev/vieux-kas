@@ -15,6 +15,8 @@ export function ContactPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       kicker={copy.contact.kicker}
       title={copy.contact.title}
       lead={copy.contact.lead}
+      mobileTitle={locale === "en" ? <><span>Discuss your</span><span className="outline-word">next industrial requirement.</span></> : <><span>Échangeons sur</span><span className="outline-word">votre prochain besoin industriel.</span></>}
+      mobileLead={locale === "en" ? "Based in Fourways, Sandton. Serving South Africa and the DRC." : "Basé à Fourways, Sandton. Service en Afrique du Sud et en RDC."}
       overlay="strong"
       primaryAction={{href: `mailto:${company.emails[0]}`, label: copy.contact.write}}
       secondaryAction={{href: company.phoneHref, label: copy.contact.call}}

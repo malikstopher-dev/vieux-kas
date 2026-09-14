@@ -12,6 +12,8 @@ export function ProcurementPage({locale, copy}: {locale: Locale; copy: SiteCopy}
       kicker={copy.procurement.kicker}
       title={copy.procurement.title}
       lead={copy.procurement.lead}
+      mobileTitle={locale === "en" ? <><span>Procurement.</span><span className="outline-word">From requirement to supply.</span></> : <><span>Approvisionnement.</span><span className="outline-word">Du besoin à la fourniture.</span></>}
+      mobileLead={locale === "en" ? "Send your RFQ. We assess sourcing. You receive a clear quotation." : "Envoyez votre demande. Nous évaluons l'approvisionnement. Vous recevez un devis clair."}
       overlay="strong"
       primaryAction={{href: routeFor("rfq", locale), label: copy.common.quote}}
       secondaryAction={{href: "#procurement-process", label: copy.common.learnMore}}

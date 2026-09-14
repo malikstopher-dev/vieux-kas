@@ -12,6 +12,8 @@ export function RFQPage({locale, copy}: {locale: Locale; copy: SiteCopy}) {
       kicker={copy.rfq.kicker}
       title={copy.rfq.title}
       lead={copy.rfq.lead}
+      mobileTitle={locale === "en" ? <><span>Send your</span><span className="outline-word">industrial RFQ.</span></> : <><span>Envoyez votre</span><span className="outline-word">demande industrielle.</span></>}
+      mobileLead={locale === "en" ? "Complete the form with technical detail. Add items. Attach documents." : "Complétez le formulaire avec détails techniques. Ajoutez des articles. Joignez des documents."}
       size="compact"
       overlay="strong"
       primaryAction={{href: "#rfq-form", label: copy.rfq.submit}}
