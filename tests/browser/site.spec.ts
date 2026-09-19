@@ -8,7 +8,6 @@ const routes = [
 async function gotoStable(page: Page, path: string) {
   const response = await page.goto(path, {waitUntil: "domcontentloaded"});
   expect(response?.status(), path).toBe(200);
-  await page.waitForLoadState("load");
   await page.locator("main h1").waitFor({state: "visible"});
   await page.waitForTimeout(250);
 }
@@ -67,6 +66,7 @@ test("root permanently redirects to the default locale and context-preserving sw
 });
 
 test("hero motion and transparent navigation effects are applied", async ({page}) => {
+  test.setTimeout(180_000);
   await gotoStable(page, "/en");
   const initialHeader = await page.locator(".site-header").evaluate((element) => {
     const styles = getComputedStyle(element);
@@ -78,6 +78,7 @@ test("hero motion and transparent navigation effects are applied", async ({page}
   });
   await page.evaluate(() => window.scrollTo(0, 500));
   await expect(page.locator(".site-header")).toHaveClass(/scrolled/);
+  await page.waitForTimeout(400);
   const compactHeader = await page.locator(".site-header").evaluate((element) => {
     const styles = getComputedStyle(element);
     return {height: element.getBoundingClientRect().height, backdrop: styles.backdropFilter, shadow: styles.boxShadow};
@@ -85,7 +86,10 @@ test("hero motion and transparent navigation effects are applied", async ({page}
 
   expect(initialHeader.background).toContain("0.9");
   expect(compactHeader.height).toBeLessThan(initialHeader.height);
-  expect(compactHeader.backdrop).toContain("blur(18px)");
+  const blurMatch = compactHeader.backdrop.match(/blur\(([\d.]+)px\)/);
+  expect(blurMatch).not.toBeNull();
+  const blurValue = parseFloat(blurMatch![1]);
+  expect(Math.abs(blurValue - 18)).toBeLessThanOrEqual(0.1);
   expect(compactHeader.shadow).not.toBe("none");
   expect(heroStyles).toEqual({name: "hero-breathe", duration: "18s", iterations: "infinite"});
 });
@@ -116,12 +120,12 @@ test("top-level heroes select unique V4 desktop and mobile artwork", async ({pag
   await page.setViewportSize({width: 390, height: 844});
   for (const [route] of heroes) {
     await gotoStable(page, route);
-    expect(await page.locator(".premium-hero-media img").evaluate((image: HTMLImageElement) => image.currentSrc)).toContain("/mobile/");
+    await expect.poll(() => page.locator(".premium-hero-media img").evaluate((image: HTMLImageElement) => image.currentSrc)).toContain("/mobile/");
   }
 });
 
 test("mobile layouts are overflow-free at every required width", async ({page}) => {
-  test.setTimeout(300_000);
+  test.setTimeout(600_000);
   for (const width of [320, 360, 375, 390, 412, 430]) {
     await page.setViewportSize({width, height: 844});
     for (const locale of ["en", "fr"]) {

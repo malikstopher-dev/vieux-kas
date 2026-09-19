@@ -4,6 +4,7 @@ import {notFound} from "next/navigation";
 import {Footer} from "@/components/Footer";
 import {Header} from "@/components/Header";
 import {company, getContent, isLocale, locales} from "@/lib/site";
+import {Suspense} from "react";
 import "../globals.css";
 
 const inter = Inter({subsets: ["latin"], variable: "--font-sans", display: "swap"});
@@ -39,7 +40,9 @@ export default async function LocaleLayout({children, params}: {children: React.
   return <html lang={locale === "en" ? "en-ZA" : "fr-CD"} className={`${inter.variable} ${playfair.variable}`} data-scroll-behavior="smooth">
     <body>
       <a className="skip-link" href="#main-content">{locale === "en" ? "Skip to content" : "Aller au contenu"}</a>
-      <Header locale={locale} copy={copy} />
+      <Suspense fallback={null}>
+        <Header locale={locale} copy={copy} />
+      </Suspense>
       <div id="main-content">{children}</div>
       <Footer locale={locale} copy={copy} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(schema).replace(/</g, "\\u003c")}} />

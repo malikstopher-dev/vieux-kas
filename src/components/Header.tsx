@@ -2,22 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useSearchParams} from "next/navigation";
 import {useEffect, useRef, useState} from "react";
 import type {Locale, PageKey, SiteCopy} from "@/lib/site";
-import {pageFromPath, routeFor} from "@/lib/site";
+import {pageFromPath, routeFor, switchLocalePath} from "@/lib/site";
 import {AnimatedHamburger, ArrowIcon} from "./Icons";
 
 type Props = {locale: Locale; copy: SiteCopy};
 
 export function Header({locale, copy}: Props) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [transparent, setTransparent] = useState(true);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
   const page = pageFromPath(pathname);
+
+  const targetHref = (targetLocale: Locale) => switchLocalePath(pathname, targetLocale, searchParams);
 
   useEffect(() => {
     const updateHeader = () => {
@@ -132,9 +135,9 @@ export function Header({locale, copy}: Props) {
           </nav>
           <div className="header-actions">
             <div className="locale-switch" role="group" aria-label={languageLabel}>
-              <Link href={routeFor(page ?? "home", "en")} lang="en" aria-current={locale === "en" ? "page" : undefined} onClick={() => saveLocale("en")}>EN</Link>
+              <Link href={targetHref("en")} lang="en" aria-current={locale === "en" ? "page" : undefined} onClick={() => saveLocale("en")}>EN</Link>
               <span aria-hidden="true">|</span>
-              <Link href={routeFor(page ?? "home", "fr")} lang="fr" aria-current={locale === "fr" ? "page" : undefined} onClick={() => saveLocale("fr")}>FR</Link>
+              <Link href={targetHref("fr")} lang="fr" aria-current={locale === "fr" ? "page" : undefined} onClick={() => saveLocale("fr")}>FR</Link>
             </div>
             <Link href={routeFor("rfq", locale)} className={`header-quote ${page === "rfq" ? "active" : ""}`} aria-current={page === "rfq" ? "page" : undefined}><span>{copy.nav.quote}</span><ArrowIcon /></Link>
             <button ref={menuButtonRef} className="menu-trigger" type="button" aria-label={open ? copy.nav.close : copy.nav.menu} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>
@@ -154,8 +157,8 @@ export function Header({locale, copy}: Props) {
           <div className="mobile-drawer-footer">
             <Link className="mobile-quote" href={routeFor("rfq", locale)} aria-current={page === "rfq" ? "page" : undefined} onClick={() => setOpen(false)} tabIndex={open ? 0 : -1}>{copy.nav.quote}<ArrowIcon /></Link>
             <div className="mobile-locale-row">
-              <Link href={routeFor(page ?? "home", "en")} lang="en" className={`mobile-locale-item ${locale === "en" ? "active" : ""}`} onClick={() => saveLocale("en")} tabIndex={open ? 0 : -1}>EN</Link>
-              <Link href={routeFor(page ?? "home", "fr")} lang="fr" className={`mobile-locale-item ${locale === "fr" ? "active" : ""}`} onClick={() => saveLocale("fr")} tabIndex={open ? 0 : -1}>FR</Link>
+              <Link href={targetHref("en")} lang="en" className={`mobile-locale-item ${locale === "en" ? "active" : ""}`} onClick={() => saveLocale("en")} tabIndex={open ? 0 : -1}>EN</Link>
+              <Link href={targetHref("fr")} lang="fr" className={`mobile-locale-item ${locale === "fr" ? "active" : ""}`} onClick={() => saveLocale("fr")} tabIndex={open ? 0 : -1}>FR</Link>
             </div>
             <p className="mobile-drawer-note">{copy.common.based}</p>
           </div>

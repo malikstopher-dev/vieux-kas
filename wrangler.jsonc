@@ -20,5 +20,11 @@
   },
   "vars": {
     "NEXT_PUBLIC_SITE_URL": "https://ak-globaltrading.com"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "www.ak-globaltrading.com/*",
+      "zone_name": "ak-globaltrading.com"
+    }
+  ]
 }

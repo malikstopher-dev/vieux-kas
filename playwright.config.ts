@@ -10,9 +10,9 @@ export default defineConfig({
   reporter: [["list"], ["html", {open: "never"}]],
   use: {
     baseURL: externalBaseUrl ?? "http://127.0.0.1:3000",
-    trace: "retain-on-failure",
+    trace: "off",
     screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    video: "off",
     ...devices["Desktop Chrome"],
   },
   webServer: externalBaseUrl ? undefined : {

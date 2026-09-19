@@ -32,9 +32,11 @@ export function pageFromPath(pathname: string): PageKey | undefined {
   return pageKeys.find((key) => Object.values(routes[key]).includes(pathname));
 }
 
-export function switchLocalePath(pathname: string, locale: Locale) {
+export function switchLocalePath(pathname: string, locale: Locale, searchParams?: URLSearchParams) {
   const key = pageFromPath(pathname);
-  return key ? routes[key][locale] : routes.home[locale];
+  const base = key ? routes[key][locale] : routes.home[locale];
+  const query = searchParams?.toString();
+  return query ? `${base}?${query}` : base;
 }
 
 export function resolvePage(locale: Locale, slug?: string[]): PageKey | undefined {
